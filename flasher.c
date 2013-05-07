@@ -1,37 +1,39 @@
 /*-------|---------|---------|---------|---------|---------|---------|---------|
 flasher.c	
 
+by chaz miller for ATMEGAxx8 set at 1MHz running at 5V. 
+
 a program to flash brake lights and then leave them turned on. The idea is for
-the brakelights  (or just the center light) to flash rapidly several times to
-gain attention, then just stay on so as not to be excessively annoying.
+the brakelights (or just the center brake light) to flash rapidly several times 
+to gain attention, then just stay on so as not to be excessively annoying.
 
 The uC is assumed to be powered by the brake-light circuit so that you press 
 the brakes, uC boots and does something then dies when you let off the brakes. 
 
 The program assumes you have the uC hooked up to a 'normally closed' relay
-so that if the uC dies; the brakelights work normally. The uC basically 
-bypassses the brake light lamp by opening the relay.
-
-by chaz miller for ATMEGAxx8 set at 1MHz running at 5V. 
+so that if the uC breaks; the brakelights work normally. The uC basically 
+bypassses the brake light lamp by opening the relay to create blinkage.
 
 This is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License version 3 or any later
 version. This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Note that this
-is for BRAKE LIGHTS for a CAR, which is IMPORTANT. NEVER USE THIS SOFTWARE.
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+
+Note that this is for BRAKE LIGHTS for a CAR, something which is IMPORTANT
+and could cause danger if there is a malfunction. NEVER USE THIS SOFTWARE.
 ******************************************************************/
 
 #include <avr/io.h>
 
-#define flash_delay 50   //How fast it flashes. 1 unit is 4ms
+#define flash_delay 400  //How fast it flashes. 4 units is 1 ms
 #define flash_blinks 3   //How many times it flashes
 
 void delay(uint16_t);
 void blink (uint8_t);
 
 int main(){
-    DDRB = 0xFF;;        //brakelight on PB5
+    DDRB = 0xFF;
 
     //8 bit Timer 0 is used by delay().
     TCCR0A = 0;                //standard timer mode (page 103)
@@ -57,25 +59,3 @@ void delay(uint16_t me){    //at 1MHz, each unit is 2.55us. 1ms is 4units.
 	while(TCNT0 > 128){}
     }
 }
-/*
-void blink (uint8_t me){
-    for (int i=0; i<me; i++){
-	PORTB |= (1<<5);
-	delay(200);
-	PORTB &= ~(1<<5);
-	delay(200);
-    }
-    delay(500);
-}
-Set a bit
- bit_fld |= (1 << n)
-
-Clear a bit
- bit_fld &= ~(1 << n)
-
-Toggle a bit
- bit_fld ^= (1 << n)
-
-Test a bit
- bit_fld & (1 << n)
-*/ 
