@@ -1,14 +1,13 @@
 /*-------|---------|---------|---------|---------|---------|---------|---------|
 flasher.c	
 
-by chaz miller for ATMEGAxx8 set at 1MHz running at 5V. 
+by chaz miller for ATMEGAxx8 set at 1MHz 
 
 a program to flash brake lights and then leave them turned on. The idea is for
 the brakelights (or just the center brake light) to flash rapidly several times 
 to gain attention, then just stay on so as not to be excessively annoying.
-
-The uC is assumed to be powered by the brake-light circuit so that you press 
-the brakes, uC boots and does something then dies when you let off the brakes. 
+commercial LED lamps that do this will not fit small miata and motorcycle lamp
+sockets.
 
 The program assumes you have the uC hooked up to a 'normally closed' relay
 so that if the uC breaks; the brakelights work normally. The uC basically 
